@@ -1,0 +1,109 @@
+{
+  "sample_id": "Item2",
+  "typing_results": {
+    "mh03USC-3qC.v2": {
+      "genotype": [
+        "CCACTGG",
+        "CTACTGG"
+      ],
+      "coverage": {
+        "max": 2460,
+        "mean": 2459.906614785992,
+        "min": 2450
+      },
+      "num_discarded": 146,
+      "thresholds": {
+        "dynamic": 92.08,
+        "static": 10
+      },
+      "counts": {
+        "CCACGGG": 1,
+        "CCACTGA": 1,
+        "CCACTGC": 2,
+        "CCACTGG": 1151,
+        "CCACTGT": 2,
+        "CTACGGG": 1,
+        "CTACTGA": 1,
+        "CTACTGC": 2,
+        "CTACTGG": 1151,
+        "CTACTGT": 2
+      }
+    },
+    "mh04WL-052.v1": {
+      "genotype": [
+        "ACCGGGCTC",
+        "GCCAAGCTC"
+      ],
+      "coverage": {
+        "max": 2460,
+        "mean": 2459.7366255144034,
+        "min": 2458
+      },
+      "num_discarded": 98,
+      "thresholds": {
+        "dynamic": 94.44,
+        "static": 10
+      },
+      "counts": {
+        "ACCGGGCTC": 1180,
+        "CCCGGGCTC": 1,
+        "GCCAAGCTC": 1181
+      }
+    },
+    "mh06SCUZJ-0528857": {
+      "genotype": [
+        "GACCGTC",
+        "GCCTACC"
+      ],
+      "coverage": {
+        "max": 2471,
+        "mean": 2471.0,
+        "min": 2471
+      },
+      "num_discarded": 28,
+      "thresholds": {
+        "dynamic": 97.32000000000001,
+        "static": 10
+      },
+      "counts": {
+        "GACCATC": 1,
+        "GACCGCC": 1,
+        "GACCGTC": 1215,
+        "GACCGTG": 2,
+        "GACCTTC": 1,
+        "GCCTAAC": 1,
+        "GCCTACC": 1218,
+        "GCCTACG": 2,
+        "GCCTGCC": 2
+      }
+    },
+    "mh17FHL-005.v3": {
+      "genotype": [
+        "AGTTTT",
+        "GCTTCT"
+      ],
+      "coverage": {
+        "max": 2478,
+        "mean": 2477.6385542168673,
+        "min": 2472
+      },
+      "num_discarded": 95,
+      "thresholds": {
+        "dynamic": 94.68,
+        "static": 10
+      },
+      "counts": {
+        "AGTTTC": 3,
+        "AGTTTG": 2,
+        "AGTTTT": 1183,
+        "CCTTCT": 2,
+        "CGTTTT": 2,
+        "GCTTCC": 3,
+        "GCTTCG": 2,
+        "GCTTCT": 1184,
+        "GGTTTT": 1,
+        "TCTTCT": 1
+      }
+    }
+  }
+}

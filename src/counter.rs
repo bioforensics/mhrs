@@ -1,0 +1,42 @@
+extern crate counter;
+extern crate serde;
+
+use crate::read::ReadHaplotype;
+use counter::Counter;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use std::collections::BTreeMap;
+
+#[derive(Debug, Clone)]
+pub struct ReadHapCounter {
+    pub tally: Counter<ReadHaplotype>,
+}
+
+impl Serialize for ReadHapCounter {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let map: BTreeMap<String, usize> = self
+            .tally
+            .iter()
+            .map(|(haplotype, &count)| (haplotype.to_string(), count))
+            .collect();
+        map.serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for ReadHapCounter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let map: BTreeMap<String, usize> = BTreeMap::deserialize(deserializer)?;
+        let mut tally = Counter::new();
+        for (haplotype_str, count) in map {
+            let haplotype = ReadHaplotype::from_string(&haplotype_str);
+            tally.insert(haplotype, count);
+        }
+
+        Ok(ReadHapCounter { tally })
+    }
+}

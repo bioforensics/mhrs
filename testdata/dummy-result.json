@@ -1,0 +1,28 @@
+{
+  "genotype": [
+    "AGTTTT",
+    "GCTTCT"
+  ],
+  "coverage": {
+    "max": 2478,
+    "mean": 2477.6385542168673,
+    "min": 2472
+  },
+  "num_discarded": 95,
+  "thresholds": {
+    "dynamic": 94.68,
+    "static": 10
+  },
+  "counts": {
+    "AGTTTC": 3,
+    "AGTTTG": 2,
+    "AGTTTT": 1183,
+    "CCTTCT": 2,
+    "CGTTTT": 2,
+    "GCTTCC": 3,
+    "GCTTCG": 2,
+    "GCTTCT": 1184,
+    "GGTTTT": 1,
+    "TCTTCT": 1
+  }
+}

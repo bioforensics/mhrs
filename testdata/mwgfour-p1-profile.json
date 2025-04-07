@@ -1,0 +1,100 @@
+{
+  "sample_id": "Item1",
+  "typing_results": {
+    "mh03USC-3qC.v2": {
+      "genotype": [
+        "CCACTGT"
+      ],
+      "coverage": {
+        "max": 2470,
+        "mean": 2469.136186770428,
+        "min": 2442
+      },
+      "num_discarded": 138,
+      "thresholds": {
+        "dynamic": 92.88,
+        "static": 10
+      },
+      "counts": {
+        "CCACTGC": 2,
+        "CCACTGG": 2,
+        "CCACTGT": 2322,
+        "GCACTGT": 6
+      }
+    },
+    "mh04WL-052.v1": {
+      "genotype": [
+        "ACCAAGCCC",
+        "GTCAAGCTT"
+      ],
+      "coverage": {
+        "max": 2462,
+        "mean": 2460.213991769547,
+        "min": 2449
+      },
+      "num_discarded": 103,
+      "thresholds": {
+        "dynamic": 94.0,
+        "static": 10
+      },
+      "counts": {
+        "ACCAAGCCC": 1178,
+        "ACCCAGCCC": 2,
+        "CCCAAGCCC": 1,
+        "CTCAAGCTT": 1,
+        "GCCAAGCCC": 1,
+        "GTCAAGCTC": 2,
+        "GTCAAGCTT": 1172,
+        "GTCCAGCTT": 2
+      }
+    },
+    "mh06SCUZJ-0528857": {
+      "genotype": [
+        "AACTGTC",
+        "GATCGTC"
+      ],
+      "coverage": {
+        "max": 2473,
+        "mean": 2473.0,
+        "min": 2473
+      },
+      "num_discarded": 42,
+      "thresholds": {
+        "dynamic": 97.24000000000001,
+        "static": 10
+      },
+      "counts": {
+        "AACTGTC": 1211,
+        "GATCGTC": 1220
+      }
+    },
+    "mh17FHL-005.v3": {
+      "genotype": [
+        "ACCCTT",
+        "GCCCTT"
+      ],
+      "coverage": {
+        "max": 2474,
+        "mean": 2472.89156626506,
+        "min": 2452
+      },
+      "num_discarded": 113,
+      "thresholds": {
+        "dynamic": 93.88,
+        "static": 10
+      },
+      "counts": {
+        "ACCCAT": 1,
+        "ACCCCT": 1,
+        "ACCCTC": 3,
+        "ACCCTT": 1178,
+        "ATCCTT": 1,
+        "GCCCAT": 1,
+        "GCCCCT": 1,
+        "GCCCTC": 3,
+        "GCCCTT": 1169,
+        "TCCCTT": 3
+      }
+    }
+  }
+}
