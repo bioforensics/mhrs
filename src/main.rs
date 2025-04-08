@@ -20,7 +20,7 @@ fn main() {
         detection_threshold: args.detection_threshold,
         analytical_threshold: args.analytical_threshold,
         min_base_quality: args.min_base_quality,
-        max_depth: 1e6 as u32,
+        max_depth: args.max_depth,
     };
     analyzer.process(&args.bam);
     println!("{}", analyzer.final_profile().to_json());

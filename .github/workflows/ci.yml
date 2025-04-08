@@ -1,4 +1,4 @@
-name: Rust
+name: CI
 
 on:
   push:
@@ -15,14 +15,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Code checkout
+      uses: actions/checkout@v4
     - name: Run tests
       run: make test
     - name: Check style
       run: make style
     - name: Compile release binary
       run: make release
-    - uses: actions/upload-artifact@v4.6.2
+    - name: Binary upload
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: mhrs
         path: target/release/mhrs

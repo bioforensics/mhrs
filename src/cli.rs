@@ -45,4 +45,13 @@ pub struct Cli {
         help = "Minimum base quality for read haplotype calling"
     )]
     pub min_base_quality: u8,
+
+    #[arg(
+        short = 'x',
+        long = "max-depth",
+        value_name = "MD",
+        default_value = "1000000",
+        help = "Maximum per-base read depth"
+    )]
+    pub max_depth: u32,
 }
