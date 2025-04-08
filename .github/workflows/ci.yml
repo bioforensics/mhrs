@@ -24,7 +24,7 @@ jobs:
     - name: Count lines of code
       run: |
         cargo install cargo-warloc
-        make style
+        make loc
     - name: Compile release binary
       run: make release
     - name: Binary upload
