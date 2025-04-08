@@ -23,6 +23,8 @@ jobs:
         make testcov | tee coverage.txt
     - name: Check style
       run: make style
+    - name: Generate documentation
+      run: make doc
     - name: Count lines of code
       run: |
         cargo install cargo-warloc

@@ -21,7 +21,11 @@ style:
 format:
 	cargo fmt
 
-## loc   :      count lines of code
+## doc:         build documentation
+doc:
+	cargo doc
+
+## loc:         count lines of code
 loc:
 	cargo warloc
 

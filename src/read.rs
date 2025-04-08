@@ -1,24 +1,38 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) 2025, DHS.
+// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+//
+// This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
+// Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
+// National Biodefense Analysis and Countermeasures Center (NBACC), a Federally Funded Research and
+// Development Center.
+// -------------------------------------------------------------------------------------------------
+
 extern crate serde;
 
 use serde::{Deserialize, Deserializer, Serialize};
 use std::fmt;
 
+/// Haplotype observation for one read sequence, represented as a sketch at predetermined SNP positions.
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct ReadHaplotype {
     alleles: Vec<char>,
 }
 
 impl ReadHaplotype {
+    /// Allocate space for a haplotype represented by N SNPs.
     pub fn new(size: usize) -> ReadHaplotype {
         let alleles = vec!['N'; size];
         ReadHaplotype { alleles }
     }
 
+    /// Initialize a haplotype observation from a string of N SNP alleles.
     pub fn from_string(allele_str: &str) -> ReadHaplotype {
         let alleles = allele_str.chars().collect();
         ReadHaplotype { alleles }
     }
 
+    /// Set the SNP at the given index to the specified allele.
     pub fn set(&mut self, index: usize, allele: char) {
         if index >= self.alleles.len() {
             panic!("index error: {}", index);
@@ -26,6 +40,7 @@ impl ReadHaplotype {
         self.alleles[index] = allele;
     }
 
+    /// Indicate whether the read haplotype is complete, i.e., whether any N characters remain.
     pub fn is_partial(&self) -> bool {
         self.alleles.iter().any(|&a| a == 'N')
     }
