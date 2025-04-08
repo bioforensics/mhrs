@@ -13,9 +13,9 @@ pub struct MicrohapProfile {
 }
 
 impl MicrohapProfile {
-    pub fn new(sample_id: String) -> MicrohapProfile {
+    pub fn new(sample_id: &str) -> MicrohapProfile {
         MicrohapProfile {
-            sample_id,
+            sample_id: sample_id.to_string(),
             results: BTreeMap::new(),
         }
     }
@@ -26,6 +26,10 @@ impl MicrohapProfile {
 
     pub fn to_json(&self) -> String {
         serde_json::to_string_pretty(self).expect("Failed to serialize MicrohapProfile to JSON")
+    }
+
+    pub fn get(&self, mhid: &str) -> Option<&TypingResult> {
+        self.results.get(mhid)
     }
 }
 
@@ -51,7 +55,7 @@ mod tests {
 
     #[test]
     fn test_profile_basic() {
-        let mut profile = MicrohapProfile::new("s1".to_string());
+        let mut profile = MicrohapProfile::new("s1");
         assert_eq!(profile.results.len(), 0);
         let result = TypingResult::from_file("testdata/dummy-result.json");
         profile.add("mh17FHL-005.v3", result);

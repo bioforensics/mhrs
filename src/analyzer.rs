@@ -14,7 +14,7 @@ pub struct MicrohapAnalyzer {
 impl MicrohapAnalyzer {
     pub fn new(sample_id: &str, csv_path: &PathBuf) -> MicrohapAnalyzer {
         let panel = MicrohapPanel::from_csv(csv_path).expect("issue parsing panel CSV");
-        let profile = MicrohapProfile::new(sample_id.to_string());
+        let profile = MicrohapProfile::new(sample_id);
 
         MicrohapAnalyzer {
             panel,
@@ -41,5 +41,42 @@ impl MicrohapAnalyzer {
 
     pub fn final_profile(&self) -> &MicrohapProfile {
         &self.profile
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::read::ReadHaplotype;
+
+    #[test]
+    fn test_analyzer() {
+        let mut analyzer = MicrohapAnalyzer::new("Item2", &PathBuf::from("testdata/mwgfour.csv"));
+        analyzer
+            .parameters
+            .detection_threshold
+            .insert("mh17FHL-005.v3", 3);
+        analyzer
+            .parameters
+            .analytical_threshold
+            .insert("mh17FHL-005.v3", 0.0001);
+        analyzer.process(&PathBuf::from("testdata/mwgfour-p2.bam"));
+        let profile = analyzer.final_profile();
+
+        let result1 = profile.get("mh03USC-3qC.v2").unwrap();
+        let expected = vec![
+            ReadHaplotype::from_string("CCACTGG"),
+            ReadHaplotype::from_string("CTACTGG"),
+        ];
+        assert_eq!(result1.genotype, expected);
+
+        let result2 = profile.get("mh17FHL-005.v3").unwrap();
+        let expected = vec![
+            ReadHaplotype::from_string("AGTTTC"),
+            ReadHaplotype::from_string("AGTTTT"),
+            ReadHaplotype::from_string("GCTTCC"),
+            ReadHaplotype::from_string("GCTTCT"),
+        ];
+        assert_eq!(result2.genotype, expected);
     }
 }
