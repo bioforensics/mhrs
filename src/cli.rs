@@ -54,4 +54,12 @@ pub struct Cli {
         help = "Maximum per-base read depth"
     )]
     pub max_depth: u32,
+
+    #[arg(
+        short = 't',
+        long = "threshold-csv",
+        value_name = "TC",
+        help = "CSV file with marker-specific thresholds; column 1 = marker name, column 2 = detection, column 3 = analytical"
+    )]
+    pub threshold_csv: Option<PathBuf>,
 }

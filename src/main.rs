@@ -16,12 +16,13 @@ use cli::Cli;
 fn main() {
     let args = Cli::parse();
     let mut analyzer = MicrohapAnalyzer::new(&args.sample, &args.csv);
-    analyzer.parameters = TypingParameters {
-        detection_threshold: args.detection_threshold,
-        analytical_threshold: args.analytical_threshold,
-        min_base_quality: args.min_base_quality,
-        max_depth: args.max_depth,
-    };
+    analyzer.parameters = TypingParameters::new(
+        args.detection_threshold,
+        args.analytical_threshold,
+        args.min_base_quality,
+        args.max_depth,
+        args.threshold_csv.as_ref(),
+    );
     analyzer.process(&args.bam);
     println!("{}", analyzer.final_profile().to_json());
 }
