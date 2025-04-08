@@ -20,15 +20,15 @@ impl TypingParameters {
     }
 
     pub fn new(
-        detection_global: u16,
-        analytical_global: f64,
+        detection_default: u16,
+        analytical_default: f64,
         min_base_quality: u8,
         max_depth: u32,
         thresholds_file: Option<&PathBuf>,
     ) -> TypingParameters {
         let mut params = TypingParameters {
-            detection_threshold: DetectionThreshold::new(detection_global),
-            analytical_threshold: AnalyticalThreshold::new(analytical_global),
+            detection_threshold: DetectionThreshold::new(detection_default),
+            analytical_threshold: AnalyticalThreshold::new(analytical_default),
             min_base_quality,
             max_depth,
         };
@@ -56,5 +56,46 @@ impl TypingParameters {
             self.detection_threshold.insert(marker, static_th);
             self.analytical_threshold.insert(marker, dynamic_th);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_typing_parameters_defaults() {
+        let params = TypingParameters::defaults();
+        assert_eq!(params.min_base_quality, 10);
+        assert_eq!(params.max_depth, 1000000);
+        assert_eq!(params.detection_threshold.get("mh13KK-221.v1"), 10);
+        assert_eq!(params.analytical_threshold.get("mh13KK-221.v1"), 0.04);
+    }
+
+    #[test]
+    fn test_typing_parameters_basic() {
+        let params = TypingParameters::new(15, 0.032, 20, 50000, None);
+        assert_eq!(params.min_base_quality, 20);
+        assert_eq!(params.max_depth, 50000);
+        assert_eq!(params.detection_threshold.get("mh13KK-221.v1"), 15);
+        assert_eq!(params.analytical_threshold.get("mh13KK-221.v1"), 0.032);
+    }
+
+    #[test]
+    fn test_typing_parameters_csv() {
+        let csv = PathBuf::from("testdata/mwgfour-thresholds.csv");
+        let params = TypingParameters::new(12, 0.024, 16, 64000, Some(&csv));
+        assert_eq!(params.min_base_quality, 16);
+        assert_eq!(params.max_depth, 64000);
+        assert_eq!(params.detection_threshold.get("mh03USC-3qC.v2"), 10);
+        assert_eq!(params.analytical_threshold.get("mh03USC-3qC.v2"), 0.039);
+        assert_eq!(params.detection_threshold.get("mh04WL-052.v1"), 10);
+        assert_eq!(params.analytical_threshold.get("mh04WL-052.v1"), 0.031);
+        assert_eq!(params.detection_threshold.get("mh06SCUZJ-0528857"), 20);
+        assert_eq!(params.analytical_threshold.get("mh06SCUZJ-0528857"), 0.041);
+        assert_eq!(params.detection_threshold.get("mh17FHL-005.v3"), 10);
+        assert_eq!(params.analytical_threshold.get("mh17FHL-005.v3"), 0.027);
+        assert_eq!(params.detection_threshold.get("mh05KK-170.v3"), 12);
+        assert_eq!(params.analytical_threshold.get("mh05KK-170.v3"), 0.024);
     }
 }
