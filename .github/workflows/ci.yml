@@ -22,9 +22,9 @@ jobs:
     - name: Check style
       run: make style
     - name: Count lines of code
-      run:
-        - cargo install cargo-warloc
-        - make style
+      run: |
+        cargo install cargo-warloc
+        make style
     - name: Compile release binary
       run: make release
     - name: Binary upload
