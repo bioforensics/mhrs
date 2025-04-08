@@ -10,8 +10,9 @@
   },
   "num_discarded": 95,
   "thresholds": {
-    "dynamic": 94.68,
-    "static": 10
+    "dynamic": 0.04,
+    "analytical": 94.68,
+    "detection": 10
   },
   "counts": {
     "AGTTTC": 3,

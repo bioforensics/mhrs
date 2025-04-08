@@ -8,9 +8,9 @@ pub struct AlleleDefinition {
 }
 
 impl AlleleDefinition {
-    pub fn new(chromosome: String) -> AlleleDefinition {
+    pub fn new(chromosome: &str) -> AlleleDefinition {
         AlleleDefinition {
-            chromosome,
+            chromosome: chromosome.to_string(),
             offsets: Vec::new(),
             indices: HashMap::new(),
         }
@@ -60,7 +60,7 @@ mod tests {
     use super::*;
 
     impl AlleleDefinition {
-        pub fn from_vector(chromosome: String, mut offsets: Vec<u32>) -> AlleleDefinition {
+        pub fn from_vector(chromosome: &str, mut offsets: Vec<u32>) -> AlleleDefinition {
             offsets.sort();
             let indices = offsets
                 .iter()
@@ -68,7 +68,7 @@ mod tests {
                 .map(|(index, &offset)| (offset, index))
                 .collect();
             AlleleDefinition {
-                chromosome,
+                chromosome: chromosome.to_string(),
                 offsets,
                 indices,
             }
@@ -92,7 +92,7 @@ mod tests {
 
     #[test]
     fn test_definition_basic() {
-        let mut def = AlleleDefinition::new("chr18".to_string());
+        let mut def = AlleleDefinition::new("chr18");
         assert_eq!(def.extent(), 0);
         def.add_snp_offset(53008000);
         def.add_snp_offset(53008025);
@@ -108,8 +108,7 @@ mod tests {
 
     #[test]
     fn test_definition_construct_from_vector() {
-        let def =
-            AlleleDefinition::from_vector("chr13".to_string(), vec![29218045, 29218056, 29218077]);
+        let def = AlleleDefinition::from_vector("chr13", vec![29218045, 29218056, 29218077]);
         assert_eq!(def.extent(), 33);
         assert_eq!(def.num_snps(), 3);
     }
@@ -117,7 +116,7 @@ mod tests {
     #[test]
     fn test_coordinates() {
         let def = AlleleDefinition::from_vector(
-            "chr5".to_string(),
+            "chr5",
             vec![
                 31094962, 31095011, 31095136, 31095187, 31095193, 31095262, 31095306,
             ],

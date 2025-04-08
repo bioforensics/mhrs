@@ -13,9 +13,9 @@ pub struct MicrohapProfile {
 }
 
 impl MicrohapProfile {
-    pub fn new(sample_id: String) -> MicrohapProfile {
+    pub fn new(sample_id: &str) -> MicrohapProfile {
         MicrohapProfile {
-            sample_id,
+            sample_id: sample_id.to_string(),
             results: BTreeMap::new(),
         }
     }
@@ -47,11 +47,15 @@ mod tests {
 
             MicrohapProfile::from_json(&data).expect("Failed to parse TypingResult from JSON")
         }
+
+        pub fn get(&self, mhid: &str) -> Option<&TypingResult> {
+            self.results.get(mhid)
+        }
     }
 
     #[test]
     fn test_profile_basic() {
-        let mut profile = MicrohapProfile::new("s1".to_string());
+        let mut profile = MicrohapProfile::new("s1");
         assert_eq!(profile.results.len(), 0);
         let result = TypingResult::from_file("testdata/dummy-result.json");
         profile.add("mh17FHL-005.v3", result);
@@ -65,7 +69,7 @@ mod tests {
         assert_eq!(profile.results.len(), 4);
         let (mhid, result) = profile.results.iter().next().expect("iter fail");
         assert_eq!(mhid, "mh03USC-3qC.v2");
-        assert_eq!(result.thresholds.dynamic_analytical, 92.08);
+        assert_eq!(result.thresholds.analytical, 92.08);
         let json = profile.to_json();
         assert!(json.contains("mh06SCUZJ-0528857"));
         assert!(json.contains("\"ACCGGGCTC\": 1180,"));

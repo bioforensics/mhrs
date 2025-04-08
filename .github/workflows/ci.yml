@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v4
+    - name: Run tests
+      run: |
+        cargo install cargo-llvm-cov
+        make testcov | tee coverage.txt
+    - name: Check style
+      run: make style
+    - name: Count lines of code
+      run: |
+        cargo install cargo-warloc
+        make loc | tee warloc.txt
+    - name: Compile release binary
+      run: make release
+    - name: Binary upload
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: mhrs
+        path: |
+          target/release/mhrs
+          coverage.txt
+          warloc.txt

@@ -1,6 +1,7 @@
 use crate::caller::HaplotypeCaller;
 use crate::observer::HaplotypeObserver;
 use crate::panel::MicrohapPanel;
+use crate::parameters::TypingParameters;
 use crate::profile::MicrohapProfile;
 use std::path::PathBuf;
 
@@ -13,7 +14,7 @@ pub struct MicrohapAnalyzer {
 impl MicrohapAnalyzer {
     pub fn new(sample_id: &str, csv_path: &PathBuf) -> MicrohapAnalyzer {
         let panel = MicrohapPanel::from_csv(csv_path).expect("issue parsing panel CSV");
-        let profile = MicrohapProfile::new(sample_id.to_string());
+        let profile = MicrohapProfile::new(sample_id);
 
         MicrohapAnalyzer {
             panel,
@@ -31,10 +32,9 @@ impl MicrohapAnalyzer {
                 self.parameters.max_depth,
             );
             let mut caller = HaplotypeCaller::from_observer(&observer);
-            let result = caller.apply_filters(
-                self.parameters.detection_threshold,
-                self.parameters.analytical_threshold,
-            );
+            let detection = self.parameters.detection_threshold.get(mhid);
+            let analytical = self.parameters.analytical_threshold.get(mhid);
+            let result = caller.apply_filters(detection, analytical);
             self.profile.add(mhid, result);
         }
     }
@@ -44,20 +44,39 @@ impl MicrohapAnalyzer {
     }
 }
 
-pub struct TypingParameters {
-    pub detection_threshold: u16,
-    pub analytical_threshold: f64,
-    pub min_base_quality: u8,
-    pub max_depth: u32,
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::read::ReadHaplotype;
 
-impl TypingParameters {
-    pub fn defaults() -> TypingParameters {
-        TypingParameters {
-            detection_threshold: 10,
-            analytical_threshold: 0.04,
-            min_base_quality: 10,
-            max_depth: 1e6 as u32,
-        }
+    #[test]
+    fn test_analyzer() {
+        let mut analyzer = MicrohapAnalyzer::new("Item2", &PathBuf::from("testdata/mwgfour.csv"));
+        analyzer
+            .parameters
+            .detection_threshold
+            .insert("mh17FHL-005.v3", 3);
+        analyzer
+            .parameters
+            .analytical_threshold
+            .insert("mh17FHL-005.v3", 0.0001);
+        analyzer.process(&PathBuf::from("testdata/mwgfour-p2.bam"));
+        let profile = analyzer.final_profile();
+
+        let result1 = profile.get("mh03USC-3qC.v2").unwrap();
+        let expected = vec![
+            ReadHaplotype::from_string("CCACTGG"),
+            ReadHaplotype::from_string("CTACTGG"),
+        ];
+        assert_eq!(result1.genotype, expected);
+
+        let result2 = profile.get("mh17FHL-005.v3").unwrap();
+        let expected = vec![
+            ReadHaplotype::from_string("AGTTTC"),
+            ReadHaplotype::from_string("AGTTTT"),
+            ReadHaplotype::from_string("GCTTCC"),
+            ReadHaplotype::from_string("GCTTCT"),
+        ];
+        assert_eq!(result2.genotype, expected);
     }
 }

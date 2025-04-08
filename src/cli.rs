@@ -38,6 +38,14 @@ pub struct Cli {
     pub analytical_threshold: f64,
 
     #[arg(
+        short = 't',
+        long = "threshold-csv",
+        value_name = "TC",
+        help = "CSV file with marker-specific thresholds; column 1 = marker name, column 2 = detection, column 3 = analytical"
+    )]
+    pub threshold_csv: Option<PathBuf>,
+
+    #[arg(
         short = 'b',
         long = "base-qual",
         value_name = "BQ",
@@ -45,4 +53,29 @@ pub struct Cli {
         help = "Minimum base quality for read haplotype calling"
     )]
     pub min_base_quality: u8,
+
+    #[arg(
+        short = 'x',
+        long = "max-depth",
+        value_name = "MD",
+        default_value = "1000000",
+        help = "Maximum per-base read depth"
+    )]
+    pub max_depth: u32,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_cli_defaults() {
+        let arglist = vec!["mhrs", "testdata/mwgfour.csv", "testdata/mwgfour-p1p3.bam"];
+        let args = Cli::parse_from(arglist);
+        assert_eq!(args.csv, PathBuf::from("testdata/mwgfour.csv"));
+        assert_eq!(args.bam, PathBuf::from("testdata/mwgfour-p1p3.bam"));
+        assert_eq!(args.detection_threshold, 10);
+        assert_eq!(args.analytical_threshold, 0.04);
+        assert!(args.threshold_csv.is_none());
+    }
 }

@@ -11,7 +11,7 @@ test:
 
 ## testcov:     run test suite and show test coverage
 testcov:
-	cargo llvm-cov --show-missing-lines
+	cargo llvm-cov --show-missing-lines --ignore-filename-regex 'src/(main|cli).rs'
 
 ## style:       check code style
 style:
@@ -20,6 +20,10 @@ style:
 ## format:      autoformat code
 format:
 	cargo fmt
+
+## loc   :      count lines of code
+loc:
+	cargo warloc
 
 ## release:     compile release binary
 release:
