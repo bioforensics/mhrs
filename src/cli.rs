@@ -63,3 +63,19 @@ pub struct Cli {
     )]
     pub max_depth: u32,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_cli_defaults() {
+        let arglist = vec!["mhrs", "testdata/mwgfour.csv", "testdata/mwgfour-p1p3.bam"];
+        let args = Cli::parse_from(arglist);
+        assert_eq!(args.csv, PathBuf::from("testdata/mwgfour.csv"));
+        assert_eq!(args.bam, PathBuf::from("testdata/mwgfour-p1p3.bam"));
+        assert_eq!(args.detection_threshold, 10);
+        assert_eq!(args.analytical_threshold, 0.04);
+        assert!(args.threshold_csv.is_none());
+    }
+}

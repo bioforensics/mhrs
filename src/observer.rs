@@ -164,4 +164,15 @@ mod tests {
         let mut observer = HaplotypeObserver::new(&def);
         observer.set("read42", 12345, 'C');
     }
+
+    #[test]
+    #[should_panic(expected = "length mismatch: 3 vs 5")]
+    fn test_observer_set_all_length_mismatch() {
+        let def = AlleleDefinition::from_vector(
+            "chr22",
+            vec![48665164, 48665175, 48665182, 48665204, 48665216],
+        );
+        let mut observer = HaplotypeObserver::new(&def);
+        observer.set_all("read42", "CAT");
+    }
 }
