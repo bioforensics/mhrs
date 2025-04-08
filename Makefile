@@ -21,6 +21,10 @@ style:
 format:
 	cargo fmt
 
+## loc   :      count lines of code
+loc:
+	cargo warloc
+
 ## release:     compile release binary
 release:
 	cargo build --release
