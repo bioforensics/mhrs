@@ -65,7 +65,7 @@ mod tests {
         assert_eq!(profile.results.len(), 4);
         let (mhid, result) = profile.results.iter().next().expect("iter fail");
         assert_eq!(mhid, "mh03USC-3qC.v2");
-        assert_eq!(result.thresholds.dynamic_analytical, 92.08);
+        assert_eq!(result.thresholds.analytical, 92.08);
         let json = profile.to_json();
         assert!(json.contains("mh06SCUZJ-0528857"));
         assert!(json.contains("\"ACCGGGCTC\": 1180,"));

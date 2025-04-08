@@ -11,7 +11,7 @@ pub struct TypingThresholds {
 }
 
 pub struct ReadCountThreshold<T> {
-    pub default: T,
+    default: T,
     by_marker: HashMap<String, T>,
 }
 
@@ -37,3 +37,28 @@ impl<T: Clone> ReadCountThreshold<T> {
 
 pub type DetectionThreshold = ReadCountThreshold<u16>;
 pub type AnalyticalThreshold = ReadCountThreshold<f64>;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_detection_threshold() {
+        let mut t = DetectionThreshold::new(42);
+        t.insert("mh09USC-9qC", 5);
+        t.insert("mh10WL-031", 15);
+        assert_eq!(t.get("mh09USC-9qC"), 5);
+        assert_eq!(t.get("mh10WL-031"), 15);
+        assert_eq!(t.get("mh04SHY-004"), 42);
+    }
+
+    #[test]
+    fn test_analytical_threshold() {
+        let mut t = AnalyticalThreshold::new(0.042);
+        t.insert("mh13KK-221.v1", 0.033);
+        t.insert("mh19USC-19qB.v2", 0.029);
+        assert_eq!(t.get("mh13KK-221.v1"), 0.033);
+        assert_eq!(t.get("mh19USC-19qB.v2"), 0.029);
+        assert_eq!(t.get("mh09WL-034"), 0.042);
+    }
+}

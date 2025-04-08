@@ -12,8 +12,9 @@
       },
       "num_discarded": 138,
       "thresholds": {
-        "dynamic": 92.88,
-        "static": 10
+        "dynamic": 0.04,
+        "analytical": 92.88,
+        "detection": 10
       },
       "counts": {
         "CCACTGC": 2,
@@ -34,8 +35,9 @@
       },
       "num_discarded": 103,
       "thresholds": {
-        "dynamic": 94.0,
-        "static": 10
+        "dynamic": 0.04,
+        "analytical": 94.0,
+        "detection": 10
       },
       "counts": {
         "ACCAAGCCC": 1178,
@@ -60,8 +62,9 @@
       },
       "num_discarded": 42,
       "thresholds": {
-        "dynamic": 97.24000000000001,
-        "static": 10
+        "dynamic": 0.04,
+        "analytical": 97.24000000000001,
+        "detection": 10
       },
       "counts": {
         "AACTGTC": 1211,
@@ -80,8 +83,9 @@
       },
       "num_discarded": 113,
       "thresholds": {
-        "dynamic": 93.88,
-        "static": 10
+        "dynamic": 0.04,
+        "analytical": 93.88,
+        "detection": 10
       },
       "counts": {
         "ACCCAT": 1,
