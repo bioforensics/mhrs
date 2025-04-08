@@ -16,12 +16,12 @@ impl MicrohapPanel {
         let mut definitions = HashMap::new();
         for result in reader.records() {
             let record = result?;
-            let identifier = record[0].to_owned();
-            let chrom = record[1].to_owned();
+            let identifier = &record[0];
+            let chrom = &record[1];
             let offset = record[2].parse::<u32>()?;
             let definition = definitions
-                .entry(identifier)
-                .or_insert_with(|| AlleleDefinition::new(chrom));
+                .entry(identifier.to_owned())
+                .or_insert_with(|| AlleleDefinition::new(&chrom));
             definition.add_snp_offset(offset);
         }
         Ok(MicrohapPanel { definitions })
@@ -41,7 +41,7 @@ mod tests {
             self.definitions.len()
         }
 
-        pub fn get(&self, identifier: &String) -> Option<&AlleleDefinition> {
+        pub fn get(&self, identifier: &str) -> Option<&AlleleDefinition> {
             self.definitions.get(identifier)
         }
     }
@@ -51,18 +51,9 @@ mod tests {
         let panel = MicrohapPanel::from_csv(&PathBuf::from("testdata/twomh.csv"))
             .expect("issue parsing panel CSV");
         assert_eq!(panel.len(), 2);
-
-        let id1 = "mh04WL-069".to_string();
-        let def1 = panel.get(&id1).unwrap();
-        assert_eq!(def1.extent(), 277);
-
-        let id2 = "mh13KK-223.v1".to_string();
-        let def2 = panel.get(&id2).unwrap();
-        assert_eq!(def2.extent(), 154);
-
-        let id3 = "mh02KK-138.v2".to_string();
-        let def3 = panel.get(&id3);
-        assert!(def3.is_none());
+        assert_eq!(panel.get("mh04WL-069").unwrap().extent(), 277);
+        assert_eq!(panel.get("mh13KK-223.v1").unwrap().extent(), 154);
+        assert!(panel.get("mh02KK-138.v2").is_none());
     }
 
     #[test]

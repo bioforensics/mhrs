@@ -52,7 +52,7 @@ mod tests {
 
     fn init_caller() -> HaplotypeCaller {
         let def = AlleleDefinition::from_vector(
-            "chr22".to_string(),
+            "chr22",
             vec![48665164, 48665175, 48665182, 48665204, 48665216],
         );
         let mut observer = HaplotypeObserver::new(&def);

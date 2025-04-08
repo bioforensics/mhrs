@@ -23,11 +23,11 @@ impl HaplotypeObserver {
         }
     }
 
-    pub fn set(&mut self, read_name: String, offset: u32, base: char) {
+    pub fn set(&mut self, read_name: &str, offset: u32, base: char) {
         let num_snps = self.definition.num_snps();
         let readhap = self
             .index
-            .entry(read_name)
+            .entry(read_name.to_string())
             .or_insert(ReadHaplotype::new(num_snps));
         let index = match self.definition.get_index(offset) {
             Some(i) => i,
@@ -96,7 +96,7 @@ impl HaplotypeObserver {
                         false => record.seq()[qpos] as char,
                     };
                     let read_name = std::str::from_utf8(record.qname()).unwrap();
-                    self.set(read_name.to_string(), refr_pos, allele);
+                    self.set(read_name, refr_pos, allele);
                 }
             }
         }
@@ -138,7 +138,7 @@ mod tests {
     #[test]
     fn test_observer_basic() {
         let def = AlleleDefinition::from_vector(
-            "chr22".to_string(),
+            "chr22",
             vec![48665164, 48665175, 48665182, 48665204, 48665216],
         );
         let mut observer = HaplotypeObserver::new(&def);
@@ -158,10 +158,10 @@ mod tests {
     #[should_panic(expected = "invalid offset: 12345")]
     fn test_observer_set_bad_offset() {
         let def = AlleleDefinition::from_vector(
-            "chr22".to_string(),
+            "chr22",
             vec![48665164, 48665175, 48665182, 48665204, 48665216],
         );
         let mut observer = HaplotypeObserver::new(&def);
-        observer.set("read42".to_string(), 12345, 'C');
+        observer.set("read42", 12345, 'C');
     }
 }
