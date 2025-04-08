@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Run tests
       run: |
-        cargo binstall llvm-cov
+        cargo install cargo-llvm-cov
         make testcov
     - name: Check style
       run: make style
