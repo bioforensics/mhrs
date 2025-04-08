@@ -1,3 +1,13 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) 2025, DHS.
+// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+//
+// This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
+// Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
+// National Biodefense Analysis and Countermeasures Center (NBACC), a Federally Funded Research and
+// Development Center.
+// -------------------------------------------------------------------------------------------------
+
 extern crate counter;
 extern crate rust_htslib;
 
@@ -8,6 +18,9 @@ use rust_htslib::{bam, bam::Read};
 use std::collections::HashMap;
 use std::path::PathBuf;
 
+/// Data structure that tracks observed alleles for individual reads. This is done by iterating over
+/// a BAM read pileup position-by-position. Thus, the `HaplotypeObserver` maintains an index of
+/// `ReadHaplotype` objects that are each populated SNP by SNP.
 pub struct HaplotypeObserver {
     definition: AlleleDefinition,
     index: HashMap<String, ReadHaplotype>,
@@ -23,6 +36,7 @@ impl HaplotypeObserver {
         }
     }
 
+    /// Store the allele for the given SNP in the given read.
     pub fn set(&mut self, read_name: &str, offset: u32, base: char) {
         let num_snps = self.definition.num_snps();
         let readhap = self
@@ -36,12 +50,14 @@ impl HaplotypeObserver {
         readhap.set(*index, base);
     }
 
+    /// Tally and return observed haplotypes, ignoring partial haplotypes.
     pub fn count(&self) -> Counter<ReadHaplotype> {
         let mut counts: Counter<ReadHaplotype> = self.index.values().cloned().collect();
         counts.retain(|readhap, _| !readhap.is_partial());
         counts
     }
 
+    /// Calculate the number of observed haplotypes that are discarded due to being partial.
     pub fn discarded(&self) -> usize {
         let counts: Counter<ReadHaplotype> = self.index.values().cloned().collect();
         counts
@@ -51,6 +67,7 @@ impl HaplotypeObserver {
             .sum()
     }
 
+    /// Calculate and return max, mean, and min per-base read coverage.
     pub fn coverage(&self) -> (u32, f64, u32) {
         let max = match self.depths.iter().max() {
             Some(d) => *d,
@@ -66,10 +83,13 @@ impl HaplotypeObserver {
         (max, mean, min)
     }
 
+    /// Indicate whether the given (0-based) genomic coordinate points to an allele-defining SNP (ADS).
     pub fn is_ads(&self, offset: u32) -> bool {
         self.definition.is_ads(offset)
     }
 
+    /// Count observed haplotypes given the specified BAM file, ignoring positions with a quality
+    /// below `min_base_qual`.
     pub fn call_from_bam(&mut self, bam_path: &PathBuf, min_base_qual: u8, max_depth: u32) {
         let mut bam = bam::IndexedReader::from_path(bam_path).unwrap();
         let _ = bam.fetch(self.definition.region());

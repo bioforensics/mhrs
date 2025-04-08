@@ -31,7 +31,11 @@ jobs:
         make loc | tee warloc.txt
     - name: Compile release binary
       run: make release
-    - name: Binary upload
+    - name: Deploy pages
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: "target/doc/"
+    - name: Upload executable
       uses: actions/upload-artifact@v4.6.2
       with:
         name: mhrs
