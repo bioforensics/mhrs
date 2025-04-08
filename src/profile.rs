@@ -27,10 +27,6 @@ impl MicrohapProfile {
     pub fn to_json(&self) -> String {
         serde_json::to_string_pretty(self).expect("Failed to serialize MicrohapProfile to JSON")
     }
-
-    pub fn get(&self, mhid: &str) -> Option<&TypingResult> {
-        self.results.get(mhid)
-    }
 }
 
 #[cfg(test)]
@@ -50,6 +46,10 @@ mod tests {
             file.read_to_string(&mut data).expect("Failed to read file");
 
             MicrohapProfile::from_json(&data).expect("Failed to parse TypingResult from JSON")
+        }
+
+        pub fn get(&self, mhid: &str) -> Option<&TypingResult> {
+            self.results.get(mhid)
         }
     }
 

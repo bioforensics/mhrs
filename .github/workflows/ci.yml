@@ -26,11 +26,13 @@ jobs:
     - name: Count lines of code
       run: |
         cargo install cargo-warloc
-        make loc
+        make loc | tee warloc.txt
     - name: Compile release binary
       run: make release
     - name: Binary upload
       uses: actions/upload-artifact@v4.6.2
       with:
         name: mhrs
-        path: target/release/mhrs
+        path: |
+          target/release/mhrs
+          warloc.txt
