@@ -4,6 +4,7 @@ extern crate serde_json;
 
 use crate::counter::ReadHapCounter;
 use crate::read::ReadHaplotype;
+use crate::thresholds::TypingThresholds;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
@@ -20,14 +21,6 @@ pub struct TypingCoverage {
     pub max: u32,
     pub mean: f64,
     pub min: u32,
-}
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct TypingThresholds {
-    #[serde(rename = "dynamic")]
-    pub dynamic_analytical: f64,
-    #[serde(rename = "static")]
-    pub static_detection: u16,
 }
 
 #[cfg(test)]

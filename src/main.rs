@@ -5,13 +5,16 @@ mod counter;
 mod definition;
 mod observer;
 mod panel;
+mod parameters;
 mod profile;
 mod read;
 mod result;
+mod thresholds;
 
-use analyzer::{MicrohapAnalyzer, TypingParameters};
+use analyzer::MicrohapAnalyzer;
 use clap::Parser;
 use cli::Cli;
+use parameters::TypingParameters;
 
 fn main() {
     let args = Cli::parse();

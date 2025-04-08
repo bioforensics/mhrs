@@ -5,7 +5,8 @@ extern crate serde_json;
 use crate::counter::ReadHapCounter;
 use crate::observer::HaplotypeObserver;
 use crate::read::ReadHaplotype;
-use crate::result::{TypingCoverage, TypingResult, TypingThresholds};
+use crate::result::{TypingCoverage, TypingResult};
+use crate::thresholds::TypingThresholds;
 use counter::Counter;
 
 pub struct HaplotypeCaller {
@@ -40,8 +41,9 @@ impl HaplotypeCaller {
         genotype.sort();
 
         let thresholds = TypingThresholds {
-            dynamic_analytical: analy,
-            static_detection: detect,
+            dynamic: analytical,
+            analytical: analy,
+            detection: detect,
         };
         let counts = ReadHapCounter {
             tally: self.raw_counts.clone(),
