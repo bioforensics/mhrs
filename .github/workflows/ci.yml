@@ -20,7 +20,7 @@ jobs:
     - name: Run tests
       run: |
         cargo install cargo-llvm-cov
-        make testcov
+        make testcov | tee coverage.txt
     - name: Check style
       run: make style
     - name: Count lines of code
@@ -35,4 +35,5 @@ jobs:
         name: mhrs
         path: |
           target/release/mhrs
+          coverage.txt
           warloc.txt
