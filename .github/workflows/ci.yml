@@ -18,7 +18,9 @@ jobs:
     - name: Code checkout
       uses: actions/checkout@v4
     - name: Run tests
-      run: make testcov
+      run: |
+        cargo binstall llvm-cov
+        make testcov
     - name: Check style
       run: make style
     - name: Count lines of code
