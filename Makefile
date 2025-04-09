@@ -9,6 +9,9 @@ help: Makefile
 test:
 	cargo test
 
+build:
+	cargo llvm-cov --ignore-filename-regex 'src/(main|cli).rs' --no-report
+
 ## testcov:     run test suite and show test coverage
 testcov:
 	cargo llvm-cov --show-missing-lines --ignore-filename-regex 'src/(main|cli).rs'

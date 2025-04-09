@@ -1,44 +1,81 @@
 name: CI
-
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
 env:
   CARGO_TERM_COLOR: always
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
     - name: Code checkout
       uses: actions/checkout@v4
-    - name: Run tests
+    - name: Setup Rust
+      uses: dtolnay/rust-toolchain@stable
+    - name: Configure Rust cache
+      uses: Swatinem/rust-cache@v2
+    - name: Install ancillary binaries
       run: |
         cargo install cargo-llvm-cov
-        make testcov | tee coverage.txt
+        cargo install cargo-warloc
+    - name: Run tests
+      run: make testcov | tee coverage.txt
     - name: Check style
       run: make style
     - name: Generate documentation
       run: make doc
     - name: Count lines of code
-      run: |
-        cargo install cargo-warloc
-        make loc | tee warloc.txt
+      run: make loc | tee warloc.txt
     - name: Compile release binary
       run: make release
-    - name: Deploy pages
-      if: github.ref == 'refs/heads/main'
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: "target/doc/"
     - name: Upload executable
       uses: actions/upload-artifact@v4.6.2
       with:
-        name: mhrs
+        name: mhrs-${{ matrix.os }}
         path: |
           target/release/mhrs
           coverage.txt
           warloc.txt
+  docs:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Code checkout
+      uses: actions/checkout@v4
+    - name: Generate documentation
+      run: make doc
+    - name: Add redirect
+      run: echo '<meta http-equiv="refresh" content="0;url=mhrs/index.html">' > target/doc/index.html
+    - name: Remove lock file
+      run: rm target/doc/.lock
+    - name: Upload pages
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: target/doc/
+  deploy:
+    needs: docs
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - name: Upload pages
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: "target/doc/mhrs"
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

@@ -1,6 +1,6 @@
 // -------------------------------------------------------------------------------------------------
 // Copyright (c) 2025, DHS.
-// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+// This file is part of mhrs: https://github.com/bioforensics/mhrs/
 //
 // This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
 // Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
