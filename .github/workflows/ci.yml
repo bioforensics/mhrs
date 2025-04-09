@@ -31,7 +31,7 @@ jobs:
       run: make release
     - name: Deploy pages
       if: github.ref == 'refs/heads/main'
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         path: "target/doc/"
     - name: Upload executable
