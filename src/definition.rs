@@ -1,5 +1,17 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) 2025, DHS.
+// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+//
+// This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
+// Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
+// National Biodefense Analysis and Countermeasures Center (NBACC), a Federally Funded Research and
+// Development Center.
+// -------------------------------------------------------------------------------------------------
+
 use std::collections::HashMap;
 
+/// Description of the allele-defining SNPs that are used to distinguish different haplotypes
+/// observed at a microhap locus.
 #[derive(Clone, Debug)]
 pub struct AlleleDefinition {
     pub chromosome: String,
@@ -8,6 +20,7 @@ pub struct AlleleDefinition {
 }
 
 impl AlleleDefinition {
+    /// Initialize a new empty definition.
     pub fn new(chromosome: &str) -> AlleleDefinition {
         AlleleDefinition {
             chromosome: chromosome.to_string(),
@@ -16,6 +29,7 @@ impl AlleleDefinition {
         }
     }
 
+    /// Add a SNP to an existing allele definition, indicating its (0-based) position in the genome.
     pub fn add_snp_offset(&mut self, offset: u32) {
         self.offsets.push(offset);
         // Yeah, these next two statements make me cringe too. But this is the opposite of
@@ -30,26 +44,32 @@ impl AlleleDefinition {
             .collect();
     }
 
+    /// Number of SNPs used to define alleles at this microhap locus.
     pub fn num_snps(&self) -> usize {
         self.offsets.len()
     }
 
+    /// Given a genomic coordinate, return the index of the corresponding SNP in this allele definition.
     pub fn get_index(&self, offset: u32) -> Option<&usize> {
         self.indices.get(&offset)
     }
 
+    /// Indicate whether the given (0-based) genomic coordinate points to an allele-defining SNP (ADS).
     pub fn is_ads(&self, offset: u32) -> bool {
         self.indices.contains_key(&offset)
     }
 
+    /// Genomic coordinate of the first SNP in this allele definition.
     pub fn start(&self) -> u32 {
         self.offsets[0] as u32
     }
 
+    /// Genomic coordinate of the last SNP in this allele definition.
     pub fn end(&self) -> u32 {
         self.offsets[self.offsets.len() - 1] as u32
     }
 
+    /// A 3-tuple indicating the absolute genomic position of this microhap allele, in the format (chrom:start-end).
     pub fn region(&self) -> (&str, u32, u32) {
         (&self.chromosome, self.start(), self.end())
     }

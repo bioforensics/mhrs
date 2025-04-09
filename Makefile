@@ -21,7 +21,11 @@ style:
 format:
 	cargo fmt
 
-## loc   :      count lines of code
+## doc:         build documentation
+doc:
+	cargo doc --no-deps
+
+## loc:         count lines of code
 loc:
 	cargo warloc
 
@@ -33,4 +37,5 @@ release:
 hooks:
 	echo "set -eo pipefail" > .git/hooks/pre-commit
 	echo "make style" >> .git/hooks/pre-commit
+	echo "make doc" >> .git/hooks/pre-commit
 	chmod 755 .git/hooks/pre-commit

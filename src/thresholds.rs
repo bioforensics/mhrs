@@ -1,8 +1,19 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) 2025, DHS.
+// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+//
+// This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
+// Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
+// National Biodefense Analysis and Countermeasures Center (NBACC), a Federally Funded Research and
+// Development Center.
+// -------------------------------------------------------------------------------------------------
+
 extern crate serde;
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// Threshold manager for a single microhap.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct TypingThresholds {
     pub dynamic: f64,
@@ -10,6 +21,7 @@ pub struct TypingThresholds {
     pub detection: u16,
 }
 
+/// Threshold map for an entire microhap panel.
 pub struct ReadCountThreshold<T> {
     default: T,
     by_marker: HashMap<String, T>,

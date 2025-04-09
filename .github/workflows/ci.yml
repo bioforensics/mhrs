@@ -11,9 +11,7 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Code checkout
       uses: actions/checkout@v4
@@ -23,13 +21,20 @@ jobs:
         make testcov | tee coverage.txt
     - name: Check style
       run: make style
+    - name: Generate documentation
+      run: make doc
     - name: Count lines of code
       run: |
         cargo install cargo-warloc
         make loc | tee warloc.txt
     - name: Compile release binary
       run: make release
-    - name: Binary upload
+    - name: Deploy pages
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: "target/doc/"
+    - name: Upload executable
       uses: actions/upload-artifact@v4.6.2
       with:
         name: mhrs

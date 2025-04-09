@@ -1,3 +1,13 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) 2025, DHS.
+// This file is part of mhrs: https://maestro.dhs.gov/gitlab-ce/nbfac/mhrs
+//
+// This software was prepared for the Department of Homeland Security (DHS) by the Battelle National
+// Biodefense Institute, LLC (BNBI) as part of contract HSHQDC-15-C-00064 to manage and operate the
+// National Biodefense Analysis and Countermeasures Center (NBACC), a Federally Funded Research and
+// Development Center.
+// -------------------------------------------------------------------------------------------------
+
 extern crate counter;
 extern crate serde;
 extern crate serde_json;
@@ -9,6 +19,8 @@ use crate::result::{TypingCoverage, TypingResult};
 use crate::thresholds::TypingThresholds;
 use counter::Counter;
 
+/// A data structure for applying read coverage thresholds to empirically observed haplotypes to
+/// produce a typing result for a single microhap.
 pub struct HaplotypeCaller {
     detection_filter: u16,
     analytical_filter: f64,
@@ -19,6 +31,7 @@ pub struct HaplotypeCaller {
 }
 
 impl HaplotypeCaller {
+    /// Initialize from a HaplotypeObserver
     pub fn from_observer(observer: &HaplotypeObserver) -> HaplotypeCaller {
         let (max, mean, min) = observer.coverage();
         let coverage = TypingCoverage { max, mean, min };
