@@ -15,6 +15,8 @@ use crate::result::TypingResult;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+/// Convenience data structure for serializing and deserializing typing results for a microhap panel
+/// to and from JSON.
 #[derive(Serialize, Deserialize)]
 pub struct MicrohapProfile {
     sample_id: String,

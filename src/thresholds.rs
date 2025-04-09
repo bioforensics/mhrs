@@ -13,6 +13,7 @@ extern crate serde;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
+/// Threshold manager for a single microhap.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct TypingThresholds {
     pub dynamic: f64,
@@ -20,6 +21,7 @@ pub struct TypingThresholds {
     pub detection: u16,
 }
 
+/// Threshold map for an entire microhap panel.
 pub struct ReadCountThreshold<T> {
     default: T,
     by_marker: HashMap<String, T>,

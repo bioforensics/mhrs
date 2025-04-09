@@ -19,6 +19,8 @@ use crate::result::{TypingCoverage, TypingResult};
 use crate::thresholds::TypingThresholds;
 use counter::Counter;
 
+/// A data structure for applying read coverage thresholds to empirically observed haplotypes to
+/// produce a typing result for a single microhap.
 pub struct HaplotypeCaller {
     detection_filter: u16,
     analytical_filter: f64,
@@ -29,6 +31,7 @@ pub struct HaplotypeCaller {
 }
 
 impl HaplotypeCaller {
+    /// Initialize from a HaplotypeObserver
     pub fn from_observer(observer: &HaplotypeObserver) -> HaplotypeCaller {
         let (max, mean, min) = observer.coverage();
         let coverage = TypingCoverage { max, mean, min };

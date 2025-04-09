@@ -10,7 +10,8 @@
 
 use std::collections::HashMap;
 
-/// Description of the SNPs that used to distinguish different haplotypes observed at a microhap locus.
+/// Description of the allele-defining SNPs that are used to distinguish different haplotypes
+/// observed at a microhap locus.
 #[derive(Clone, Debug)]
 pub struct AlleleDefinition {
     pub chromosome: String,

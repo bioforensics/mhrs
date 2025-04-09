@@ -23,7 +23,7 @@ format:
 
 ## doc:         build documentation
 doc:
-	cargo doc
+	cargo doc --no-deps
 
 ## loc:         count lines of code
 loc:

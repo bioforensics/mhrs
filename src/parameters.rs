@@ -12,6 +12,7 @@ use crate::thresholds::{AnalyticalThreshold, DetectionThreshold};
 use csv::ReaderBuilder;
 use std::path::PathBuf;
 
+/// Parameters for configuring the haplotype calling algorithm.
 pub struct TypingParameters {
     pub detection_threshold: DetectionThreshold,
     pub analytical_threshold: AnalyticalThreshold,

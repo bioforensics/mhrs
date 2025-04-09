@@ -26,7 +26,7 @@ impl ReadHaplotype {
         ReadHaplotype { alleles }
     }
 
-    /// Initialize a haplotype observation from a string of N SNP alleles.
+    /// Initialize a haplotype observation from a string of SNP alleles.
     pub fn from_string(allele_str: &str) -> ReadHaplotype {
         let alleles = allele_str.chars().collect();
         ReadHaplotype { alleles }

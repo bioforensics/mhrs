@@ -11,9 +11,7 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - name: Code checkout
       uses: actions/checkout@v4
@@ -32,6 +30,7 @@ jobs:
     - name: Compile release binary
       run: make release
     - name: Deploy pages
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-pages-artifact@v2
       with:
         path: "target/doc/"

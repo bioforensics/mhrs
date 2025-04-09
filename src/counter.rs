@@ -16,6 +16,8 @@ use counter::Counter;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::collections::BTreeMap;
 
+/// Convenience data structure for serializing and deserializing haplotype read counts to and from
+/// JSON.
 #[derive(Debug, Clone)]
 pub struct ReadHapCounter {
     pub tally: Counter<ReadHaplotype>,

@@ -17,6 +17,7 @@ use crate::read::ReadHaplotype;
 use crate::thresholds::TypingThresholds;
 use serde::{Deserialize, Serialize};
 
+/// Typing result for a single microhap.
 #[derive(Serialize, Deserialize)]
 pub struct TypingResult {
     pub genotype: Vec<ReadHaplotype>,
@@ -26,6 +27,7 @@ pub struct TypingResult {
     pub counts: ReadHapCounter,
 }
 
+/// Read coverage statistics for a single typing result.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct TypingCoverage {
     pub max: u32,

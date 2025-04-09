@@ -17,6 +17,7 @@ use std::collections::HashMap;
 use std::error::Error;
 use std::path::PathBuf;
 
+/// A map of microhap names/identifiers to corresponding allele definitions.
 pub struct MicrohapPanel {
     definitions: HashMap<String, AlleleDefinition>,
 }
